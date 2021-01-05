@@ -1,0 +1,39 @@
+Package: GetAboutPages
+Title: Getting about page content from an website 
+Version: 0.0.1
+Authors@R: 
+    c(person(given = "Milan",
+           family = "de Vries",
+           role = c("aut"),
+           email = "milandv@jhu.edu"),
+      person(given = "Jae Yeon",
+           family = "Kim",
+           role = c("aut", "cre"),
+           email = "jaeyeonkim2Berkeley.edu",
+           comment = c(ORCID = "0000-0002-6533-7910")))
+Description: A tool for getting about page content from an website. The package also helps handling errors.
+Maintainer: Jae Yeon Kim <jaeyeonkim@berkeley.edu>
+BugReports: https://github.com/p3lab/GetAboutPages/issues
+Depends: R (>= 3.6)
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports: 
+    htm2txt,
+    xml2,
+    rvest,
+    stringr,
+    tibble,
+    dplyr,
+    purrr,
+    RCurl,
+    here,
+    glue,
+    rex,
+    urltools,
+    textclean,
+    magrittr
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Suggests: 
+    testthat
