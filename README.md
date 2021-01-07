@@ -1,17 +1,17 @@
 
-# GetAboutPages
+# ParseIRS990 
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of GetAboutPages is to ...
+The goal of ParseIRS990 is to ...
 
 ## Installation
 
 ``` r
 ## Install the current development version from GitHub
 
-devtools::install_github("p3lab/GetABoutPages", dependencies = TRUE)
+devtools::install_github("p3lab/ParseIRS990", dependencies = TRUE)
 
 ```
 
@@ -20,7 +20,7 @@ devtools::install_github("p3lab/GetABoutPages", dependencies = TRUE)
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(GetAboutPages)
+library(ParseIRS990)
 ## basic example code
 ```
 
