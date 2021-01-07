@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • GetAboutPages</title>
+<title>Function reference • ParseIRS990</title>
 
 
 <!-- jquery -->
@@ -70,7 +70,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">GetAboutPages</a>
+        <a class="navbar-link" href="../index.html">ParseIRS990</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
@@ -89,7 +89,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/p3lab/GetAboutPages/">
+  <a href="https://github.com/p3lab/ParseIRS990/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -133,33 +133,117 @@
       <tr>
         
         <td>
-          <p><code><a href="extract_about_links.html">extract_about_links()</a></code> </p>
+          <p><code><a href="check_for_grantmaking_activity_990.html">check_for_grantmaking_activity_990()</a></code> </p>
         </td>
-        <td><p>Extract links and other information related to about page</p></td>
+        <td><p>Check for grant-making activity from 990 forms</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="extract_about_page_content.html">extract_about_page_content()</a></code> </p>
+          <p><code><a href="clean_program_desc.html">clean_program_desc()</a></code> </p>
         </td>
-        <td><p>Extract about page content</p></td>
+        <td><p>Clean the descriptions of the programs run by a particular organization</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="find_about_link.html">find_about_link()</a></code> </p>
+          <p><code><a href="example_function_for_single_org.html">example_function_for_single_org()</a></code> </p>
         </td>
-        <td><p>Find links and other information related to about page</p></td>
+        <td><p>Get various information about an organization</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="get_about_page_content.html">get_about_page_content()</a></code> </p>
+          <p><code><a href="extract_financial_info.html">extract_financial_info()</a></code> </p>
         </td>
-        <td><p>Get about page content</p></td>
+        <td><p>Extract financial information from 990 forms</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="if_not_about.html">if_not_about()</a></code> </p>
+          <p><code><a href="filter_null_grant_info.html">filter_null_grant_info()</a></code> </p>
         </td>
-        <td><p>Check whether the href attribute contains "about" or not</p></td>
+        <td><p>Filter null grant information</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_990.html">get_990()</a></code> </p>
+        </td>
+        <td><p>Get the XML root element associated with a particular Employment Identification Numbers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_aws_url.html">get_aws_url()</a></code> </p>
+        </td>
+        <td><p>Get the Amazon Web Server URL associated with a particular Employment Identification Numbers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_financial_details_990.html">get_financial_details_990()</a></code> </p>
+        </td>
+        <td><p>Get financial details from 990 forms</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_financial_details_990ez.html">get_financial_details_990ez()</a></code> </p>
+        </td>
+        <td><p>Get financial details from 990 EZ forms</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_foundation_ein.html">get_foundation_ein()</a></code> </p>
+        </td>
+        <td><p>Get Employer Identification Numbers (EINs) associated with foundations</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_grantmaking_details_990.html">get_grantmaking_details_990()</a></code> </p>
+        </td>
+        <td><p>Get grant-making details from 990 forms</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_organization_name_990.html">get_organization_name_990()</a></code> </p>
+        </td>
+        <td><p>Get the name of the organization associated with a particular Employment Identification Numbers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_scheduleO.html">get_scheduleO()</a></code> </p>
+        </td>
+        <td><p>Get concrete information from Schedule O</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_scheduleR.html">get_scheduleR()</a></code> </p>
+        </td>
+        <td><p>Get concrete information from Schedule R</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_value_990.html">get_value_990()</a></code> </p>
+        </td>
+        <td><p>Get concrete information from 990 forms</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ifnotNA.html">ifnotNA()</a></code> </p>
+        </td>
+        <td><p>Simplify ifelse process</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="import_idx.html">import_idx()</a></code> </p>
+        </td>
+        <td><p>Import machine-readable data from 990 forms filed with the IRS</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="standardize_990_flag.html">standardize_990_flag()</a></code> </p>
+        </td>
+        <td><p>Standardize 990 flag</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="standardize_url.html">standardize_url()</a></code> </p>
+        </td>
+        <td><p>Standardize the website URL of an organization</p></td>
       </tr>
     </tbody>
     </table>
