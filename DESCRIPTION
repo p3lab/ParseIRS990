@@ -1,5 +1,5 @@
-Package: GetAboutPages
-Title: Getting about page content from an website 
+Package: ParseIRS990
+Title: Parsing IRS Form 990 and other related tax reports  
 Version: 0.0.1
 Authors@R: 
     c(person(given = "Milan",
@@ -11,24 +11,26 @@ Authors@R:
            role = c("aut", "cre"),
            email = "jaeyeonkim2Berkeley.edu",
            comment = c(ORCID = "0000-0002-6533-7910")))
-Description: A tool for getting about page content from an website. The package also helps handling errors.
+Description: A tool for parsing IRS 990, 990-EZ, 990-PF tax rerpots. The package also helps handling errors.
 Maintainer: Jae Yeon Kim <jaeyeonkim@berkeley.edu>
-BugReports: https://github.com/p3lab/GetAboutPages/issues
+BugReports: https://github.com/p3lab/ParseIRS990/issues
 Depends: R (>= 3.6)
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
     htm2txt,
+    XML, #
     xml2,
-    rvest,
+    rvest, # 
+    jsonline, # 
     stringr,
     tibble,
-    dplyr,
+    dplyr, #
     purrr,
     RCurl,
-    here,
-    glue,
-    rex,
+    here, # 
+    glue, # 
+    rex, #
     urltools,
     textclean,
     magrittr
