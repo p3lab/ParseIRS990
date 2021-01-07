@@ -21,7 +21,6 @@ extract_financial_info <- function(xml_plucked, variable){
 #' Get financial details from 990 forms 
 #'
 #' @param xml_root An XML root element associated with a particular organization
-#' @param variable A particular field in 990 forms 
 #' 
 #' @return If successful, the function returns a dataframe that contains information on an organization's "revenue," "assets," "liabilities," and "expenses."
 #' @importFrom purrr pluck 
@@ -56,7 +55,6 @@ get_financial_details_990 <- function(xml_root){
 #' Get financial details from 990 EZ forms 
 #'
 #' @param xml_root An XML root element associated with a particular organization
-#' @param variable A particular field in 990 EZ forms 
 #' 
 #' @return If successful, the function returns a dataframe that contains information on an organizatino's "revenue," "assets," "liabilities," and "expenses."
 #' @importFrom purrr pluck 

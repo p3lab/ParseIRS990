@@ -30,8 +30,6 @@ import_idx <- function(year){
   }
 }
 
-idx <- import_idx(2012)
-
 #' Get Employer Identification Numbers (EINs) associated with foundations 
 #'
 #' @param idx A XML file it contains the 990 forms filed in a particular year. An outcome of import_idx() function.
@@ -148,14 +146,7 @@ get_organization_name_990 <- function(ein) {
 #' @param raw_website The raw website URL of an organization 
 #' 
 #' @return If successful, the function returns the standardized version of the raw website URL. 
-#' @importFrom rex rex 
-#' @importFrom rex except_some_of
-#' @importFrom rex group
-#' @importFrom rex maybe
-#' @importFrom rex zero_or_more
-#' @importFrom rex one_or_more
-#' @importFrom rex at_least
-#' @importFrom rex between
+#' @import rex 
 #' @importFrom urltools url_parse
 #' @importFrom glue glue_data
 #' @importFrom dplyr mutate
