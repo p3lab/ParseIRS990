@@ -1,4 +1,4 @@
-#' Import machine-readable data from electronic 990 forms filed with the IRS
+#' Import machine-readable data from 990 forms filed with the IRS
 #'
 #' @param year A year in which a form was filed  
 #' 

@@ -1,4 +1,4 @@
 library(testthat)
-library(GetAboutPages)
+library(ParseIRS990)
 
-test_check("GetAboutPages")
+test_check("ParseIRS990")

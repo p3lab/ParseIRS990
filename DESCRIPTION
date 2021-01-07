@@ -18,22 +18,19 @@ Depends: R (>= 3.6)
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
-    htm2txt,
-    XML, #
-    xml2,
-    rvest, # 
-    jsonline, # 
-    stringr,
-    tibble,
-    dplyr, #
-    purrr,
-    RCurl,
-    here, # 
-    glue, # 
-    rex, #
-    urltools,
-    textclean,
-    magrittr
+    readr, 
+    XML, 
+    rvest, 
+    jsonline,  
+    stringr, 
+    tibble, 
+    dplyr, 
+    purrr, 
+    here,  
+    glue,  
+    rex, 
+    urltools, 
+    magrittr 
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
