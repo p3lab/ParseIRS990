@@ -131,9 +131,6 @@ get_990 <- function(ein) {
 
 get_organization_name_990 <- function(ein) {
 
-  # IRS data from a particular year
-  idx <- import_idx(year)
-
   organization_name <- idx %>%
     filter(EIN == ein) %>%
     select(OrganizationName)
