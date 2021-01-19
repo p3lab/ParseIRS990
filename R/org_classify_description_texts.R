@@ -156,6 +156,30 @@ get_organization_name_990 <- function(ein) {
 
 standardize_url <- function(raw_website){
   
+  # valid_cars comes from https://cran.r-project.org/web/packages/rex/vignettes/url_parsing.html
+  valid_chars <- rex(except_some_of(".", "/", " ", "-"))
+  
+  re <- rex(
+    start,
+    # protocol identifier (optional) + //
+    group(list("http", maybe("s")) %or% "ftp", "://"),
+    # user:pass authentication (optional)
+    maybe(non_spaces,
+          maybe(":", zero_or_more(non_space)),
+          "@"),
+    #host name
+    group(zero_or_more(valid_chars, zero_or_more("-")), one_or_more(valid_chars)),
+    #domain name
+    zero_or_more(".", zero_or_more(valid_chars, zero_or_more("-")), one_or_more(valid_chars)),
+    #TLD identifier
+    group(".", valid_chars %>% at_least(2)),
+    # server port number (optional)
+    maybe(":", digit %>% between(2, 5)),
+    # resource path (optional)
+    maybe("/", non_space %>% zero_or_more()),
+    end
+  )
+  
   # Lower case and remove whitespace
   raw_website <- raw_website %>% tolower() %>% trimws()
   
