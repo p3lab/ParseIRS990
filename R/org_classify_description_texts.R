@@ -263,6 +263,25 @@ ifnotNA <- function(var) {
   )
 }
 
+#' Get 990 filing type 
+#'
+#' @param xml_root An XML root element associated with a particular organization
+#' 
+#' @importFrom purrr pluck
+#' @importFrom purrr map_chr
+#' @importFrom XML getNodeSet
+#' @export
+
+get_filing_type_990 <- function(xml_root) {
+
+  xml_plucked <- xml_root %>%
+    pluck(1) # pick the second element on the list
+
+  filing_type <- xml_plucked %>% getNodeSet("//ReturnTypeCd") %>% map_chr(xmlValue)
+    return(ifnotNA(filing_type))
+  
+}
+
 #' Get concrete information from 990 forms 
 #'
 #' @param xml_root An XML root element associated with a particular organization
@@ -281,6 +300,8 @@ get_value_990 <- function(xml_root, type =
                               "program_desc"),
                           text_length_threshold = 50) {
 
+  filing_type <- get_filing_type_990(xml_root) # need form type to know where to look or text
+
   xml_plucked <- xml_root %>%
     pluck(2) # pick the second element on the list
 
@@ -291,13 +312,22 @@ get_value_990 <- function(xml_root, type =
   }
 
   if (type == "mission_desc") {
-    mission_desc <- xml_plucked %>% getNodeSet("//MissionDesc") %>% map_chr(xmlValue)
+    if (filing_type == "990EZ") {
+      mission_desc <- xml_plucked %>% getNodeSet("//PrimaryExemptPurposeTxt") %>% map_chr(xmlValue)
+    } else {
+      mission_desc <- xml_plucked %>% getNodeSet("//MissionDesc") %>% map_chr(xmlValue)
+    }
     return(ifnotNA(mission_desc))
   }
 
   if (type == "program_desc") {
-    program_desc <- xml_plucked %>% getNodeSet("//Desc") %>% map_chr(xmlValue) %>%
+    if (filing_type == "990EZ") {
+      program_desc <- xml_plucked %>% getNodeSet("//DescriptionProgramSrvcAccomTxt") %>% map_chr(xmlValue) %>%
       clean_program_desc(text_length_threshold)
+    } else {
+      program_desc <- xml_plucked %>% getNodeSet("//Desc") %>% map_chr(xmlValue) %>%
+      clean_program_desc(text_length_threshold)
+    }
     return(ifnotNA(program_desc))
   }
 }
