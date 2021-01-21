@@ -12,7 +12,7 @@ test_that("MoveOn example check", {
 test_that("Check whether the exact document source is provided when inspecting Schedule O", {
     
     # 2019 IRS data 
-    idx <- data("idx_2019")
+    data("idx_2019")
     
     expect_equal(grepl("From FORM", get_scheduleO("061553389")), TRUE)
 
