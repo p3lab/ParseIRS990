@@ -10,7 +10,7 @@ get_scheduleR(ein)
 \item{ein}{An Employment Identification Numbers}
 }
 \value{
-The function returns either concrete information from Schedule R (likely character) or states that such information is not present.
+The function returns either concrete information from Schedule R (likely a character vector) or states that such information is not present.
 }
 \description{
 Get concrete information from Schedule R

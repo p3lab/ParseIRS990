@@ -258,9 +258,7 @@ clean_program_desc <- function(program_desc, text_length_threshold) {
 #' @export
 
 ifnotNA <- function(var) {
-  ifelse(length(var) != 0,
-         var, NA
-  )
+  ifelse(length(var) != 0, var, NA)
 }
 
 #' Get 990 filing type 
@@ -335,7 +333,7 @@ get_value_990 <- function(xml_root, type =
 #' Get concrete information from Schedule R
 #'
 #' @param ein An Employment Identification Numbers 
-#' @return The function returns either concrete information from Schedule R (likely character) or states that such information is not present.
+#' @return The function returns either concrete information from Schedule R (likely a character vector) or states that such information is not present.
 #' @importFrom purrr pluck
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_detect
@@ -362,12 +360,11 @@ get_scheduleR <- function(ein) {
     # Select ScheduleR and go to the node EIN
     out <- parsed_scheduleR$IRS990ScheduleR %>%
       getNodeSet("//EIN") %>%
-      map_chr(xmlValue) %>%
-      list() # The output type is a list because it can be a vector of many numeric values
+      map_chr(xmlValue)
 
     # ScheduleR is not present
   } else {
-    out <- list(glue("{ein} did not file ScheduleR."))
+    out <- glue("{ein} did not file ScheduleR.")
   }
 
   return(ifnotNA(out))
@@ -376,7 +373,7 @@ get_scheduleR <- function(ein) {
 #' Get concrete information from Schedule O
 #'
 #' @param ein An Employment Identification Numbers 
-#' @return The function returns either concrete information from Schedule O (likely character) or states that such information is not present.
+#' @return The function returns either concrete information from Schedule O (likely a character vector) or states that such information is not present.
 #' @importFrom purrr pluck
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_detect
@@ -400,18 +397,25 @@ get_scheduleO <- function(ein) {
     parsed_scheduleO <- parsed_xml %>%
       xmlChildren()
 
-    # Select ScheduleO and go to the node EIN
-    out <- parsed_scheduleO$IRS990ScheduleO %>%
+    # Text 
+    text <- parsed_scheduleO$IRS990ScheduleO %>%
       getNodeSet("//ExplanationTxt") %>%
-      map_chr(xmlValue) %>%
-      list() # The output type is a list because it can be a vector of many numeric values
+      map_chr(xmlValue) 
+     
+    # What the text is about 
+    ref <- parsed_scheduleO$IRS990ScheduleO %>%
+      getNodeSet("//FormAndLineReferenceDesc") %>%
+      map_chr(xmlValue) 
+    
+    out <- glue("From {ref %>% pluck(1)}: {text %>% pluck(1)}")
 
     # ScheduleO is not present
   } else {
-    out <- list(glue("{ein} did not file ScheduleO."))
+    out <- glue("{ein} did not file ScheduleO.")
   }
 
-  return(ifnotNA(out))
+  return(out)
+  
 }
 
 #' Get various information about an organization 
