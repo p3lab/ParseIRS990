@@ -328,6 +328,7 @@ get_value_990 <- function(xml_root, type =
     }
     return(ifnotNA(program_desc))
   }
+  
 }
 
 #' Get concrete information from Schedule R
