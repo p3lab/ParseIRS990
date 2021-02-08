@@ -9,11 +9,18 @@ test_that("MoveOn example check", {
   
     })
 
+grepl("http", standardize_url("www.moveon.org"))
 test_that("Check whether the exact document source is provided when inspecting Schedule O", {
     
     # 2019 IRS data 
     data("idx_2019")
     
-    expect_equal(grepl("From FORM", get_scheduleO("061553389")), TRUE)
+    expect_equal(unique(grepl("From FORM", get_scheduleO("061553389"))), TRUE)
 
     })
+
+test_that("Check whether get_scheduleO returns all entries", {
+  
+expect_equal(length(grepl("From FORM", (get_scheduleO("061553389")), TRUE)) >= 2, TRUE)
+  
+  })

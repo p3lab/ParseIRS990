@@ -408,7 +408,7 @@ get_scheduleO <- function(ein) {
       getNodeSet("//FormAndLineReferenceDesc") %>%
       map_chr(xmlValue) 
     
-    out <- glue("From {ref %>% pluck(1)}: {text %>% pluck(1)}")
+    out <- glue("From {ref}: {text}")
 
     # ScheduleO is not present
   } else {
