@@ -328,6 +328,7 @@ get_value_990 <- function(xml_root, type =
     }
     return(ifnotNA(program_desc))
   }
+  
 }
 
 #' Get concrete information from Schedule R
@@ -407,7 +408,7 @@ get_scheduleO <- function(ein) {
       getNodeSet("//FormAndLineReferenceDesc") %>%
       map_chr(xmlValue) 
     
-    out <- glue("From {ref %>% pluck(1)}: {text %>% pluck(1)}")
+    out <- glue("From {ref}: {text}")
 
     # ScheduleO is not present
   } else {
