@@ -27,6 +27,7 @@ Imports:
     tidyr, 
     dplyr, 
     purrr, 
+    furrr,
     here,  
     glue,  
     rex, 

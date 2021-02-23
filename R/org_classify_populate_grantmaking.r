@@ -123,7 +123,7 @@ check_for_grantmaking_activity_990 <- function(xml_root) {
 #' @param variable A particular field in 990 forms 
 #' 
 #' @return The function either returns the numeric financial information or 0 (in the case of NULL). 
-#' @importFrom purrr map 
+#' @importFrom furrr future_map 
 #' @importFrom purrr reduce
 #' @export
 
@@ -132,8 +132,8 @@ filter_null_grant_info <- function(variable){
   if (length(variable) != 0) {
 
     variable <- variable %>%
-      map(xmlValue) %>%
-      map(as.numeric) %>%
+      future_map(xmlValue) %>%
+      future_map(as.numeric) %>%
       reduce(`+`)} else {
 
         variable <- 0 # I intentionally made the function to return 0 in this case as it's not NA
@@ -147,7 +147,7 @@ filter_null_grant_info <- function(variable){
 #' @param flag_value A value associated with 990 flag 
 #' 
 #' @return The function makes the flag_value either 1 (flag_value == "true") or 0 (other cases plus when length(flag_value) == 0). 
-#' @importFrom purrr map 
+#' @importFrom furrr future_map 
 #' @importFrom purrr reduce
 #' @export
 
@@ -166,7 +166,7 @@ standardize_990_flag <- function(flag_value) {
 #' 
 #' @return If successful, the function returns a dataframe of six columns that contains information the amount of various grants the organization received. If such information were absent in the data, then these columns would contain only NA values. 
 #' @importFrom XML getNodeSet
-#' @importFrom purrr map 
+#' @importFrom furrr future_map 
 #' @importFrom tibble tibble
 #' @export
 
@@ -191,17 +191,17 @@ get_grantmaking_details_990 <- function(xml_root) {
 
     grantmaking_501c3_cnt <- xml_plucked %>%
       getNodeSet("//IRS990ScheduleI//Total501c3OrgCnt") %>%
-      map(xmlValue) %>%
+      future_map(xmlValue) %>%
       standardize_990_flag()
 
     grantmaking_other_org_cnt <- xml_plucked %>%
       getNodeSet("//IRS990ScheduleI//TotalOtherOrgCnt") %>%
-      map(xmlValue) %>%
+      future_map(xmlValue) %>%
       standardize_990_flag()
 
     other_grantmaking <- xml_plucked %>%
       getNodeSet("//TotalGrantOrContriPdDurYrAmt") %>%
-      map(xmlValue)
+      future_map(xmlValue)
 
     if (length(other_grantmaking) == 0) { other_grantmaking <- 0 } # For the same reason above, I think that this should be 0 rather than NA. NA (explicit missing value) should indicate missing values.
 

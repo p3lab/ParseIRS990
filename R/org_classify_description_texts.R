@@ -229,13 +229,13 @@ standardize_url <- function(raw_website){
 #' @param text_length_threshold The length of the minimum words to filter the program descriptions 
 #' 
 #' @return If successful, the function returns the cleaned descriptions of the programs run by a particular organization 
-#' @importFrom purrr map_int 
+#' @importFrom furrr future_map_int 
 #' @export
 
 clean_program_desc <- function(program_desc, text_length_threshold) {
   
   if (length(program_desc) > 0) {
-    length_check <- map_int(
+    length_check <- future_map_int(
       program_desc,
       function(x) {
         nchar(x) > text_length_threshold
@@ -266,7 +266,7 @@ ifnotNA <- function(var) {
 #' @param xml_root An XML root element associated with a particular organization
 #' 
 #' @importFrom purrr pluck
-#' @importFrom purrr map_chr
+#' @importFrom furrr future_map_chr
 #' @importFrom XML getNodeSet
 #' @export
 
@@ -275,7 +275,7 @@ get_filing_type_990 <- function(xml_root) {
   xml_plucked <- xml_root %>%
     pluck(1) # pick the second element on the list
 
-  filing_type <- xml_plucked %>% getNodeSet("//ReturnTypeCd") %>% map_chr(xmlValue)
+  filing_type <- xml_plucked %>% getNodeSet("//ReturnTypeCd") %>% future_map_chr(xmlValue)
     return(ifnotNA(filing_type))
   
 }
@@ -288,7 +288,7 @@ get_filing_type_990 <- function(xml_root) {
 #' 
 #' @return Depending on the type parameter, the function returns either a website URL, a mission statement, or a program description(s).
 #' @importFrom purrr pluck
-#' @importFrom purrr map_chr
+#' @importFrom furrr future_map_chr
 #' @importFrom XML getNodeSet
 #' @export
 
@@ -305,25 +305,25 @@ get_value_990 <- function(xml_root, type =
 
   # Outcomes
   if (type == "website") {
-    website <- xml_plucked %>% getNodeSet("//WebsiteAddressTxt") %>% map_chr(xmlValue)
+    website <- xml_plucked %>% getNodeSet("//WebsiteAddressTxt") %>% future_map_chr(xmlValue)
     return(ifnotNA(website) %>% standardize_url)
   }
 
   if (type == "mission_desc") {
     if (filing_type == "990EZ") {
-      mission_desc <- xml_plucked %>% getNodeSet("//PrimaryExemptPurposeTxt") %>% map_chr(xmlValue)
+      mission_desc <- xml_plucked %>% getNodeSet("//PrimaryExemptPurposeTxt") %>% future_map_chr(xmlValue)
     } else {
-      mission_desc <- xml_plucked %>% getNodeSet("//MissionDesc") %>% map_chr(xmlValue)
+      mission_desc <- xml_plucked %>% getNodeSet("//MissionDesc") %>% future_map_chr(xmlValue)
     }
     return(ifnotNA(mission_desc))
   }
 
   if (type == "program_desc") {
     if (filing_type == "990EZ") {
-      program_desc <- xml_plucked %>% getNodeSet("//DescriptionProgramSrvcAccomTxt") %>% map_chr(xmlValue) %>%
+      program_desc <- xml_plucked %>% getNodeSet("//DescriptionProgramSrvcAccomTxt") %>% future_map_chr(xmlValue) %>%
       clean_program_desc(text_length_threshold)
     } else {
-      program_desc <- xml_plucked %>% getNodeSet("//Desc") %>% map_chr(xmlValue) %>%
+      program_desc <- xml_plucked %>% getNodeSet("//Desc") %>% future_map_chr(xmlValue) %>%
       clean_program_desc(text_length_threshold)
     }
     return(ifnotNA(program_desc))
@@ -336,7 +336,7 @@ get_value_990 <- function(xml_root, type =
 #' @param ein An Employment Identification Numbers 
 #' @return The function returns either concrete information from Schedule R (likely a character vector) or states that such information is not present.
 #' @importFrom purrr pluck
-#' @importFrom purrr map_chr
+#' @importFrom furrr future_map_chr
 #' @importFrom stringr str_detect
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlChildren
@@ -361,7 +361,7 @@ get_scheduleR <- function(ein) {
     # Select ScheduleR and go to the node EIN
     out <- parsed_scheduleR$IRS990ScheduleR %>%
       getNodeSet("//EIN") %>%
-      map_chr(xmlValue)
+      future_map_chr(xmlValue)
 
     # ScheduleR is not present
   } else {
@@ -376,7 +376,7 @@ get_scheduleR <- function(ein) {
 #' @param ein An Employment Identification Numbers 
 #' @return The function returns either concrete information from Schedule O (likely a character vector) or states that such information is not present.
 #' @importFrom purrr pluck
-#' @importFrom purrr map_chr
+#' @importFrom furrr future_map_chr
 #' @importFrom stringr str_detect
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlChildren
@@ -401,12 +401,12 @@ get_scheduleO <- function(ein) {
     # Text 
     text <- parsed_scheduleO$IRS990ScheduleO %>%
       getNodeSet("//ExplanationTxt") %>%
-      map_chr(xmlValue) 
+      future_map_chr(xmlValue) 
      
     # What the text is about 
     ref <- parsed_scheduleO$IRS990ScheduleO %>%
       getNodeSet("//FormAndLineReferenceDesc") %>%
-      map_chr(xmlValue) 
+      future_map_chr(xmlValue) 
     
     out <- glue("From {ref}: {text}")
 
