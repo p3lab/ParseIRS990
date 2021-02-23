@@ -1,6 +1,6 @@
 Package: ParseIRS990
 Title: Parsing IRS Form 990 and other related tax reports  
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Milan",
            family = "de Vries",
