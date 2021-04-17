@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of ParseIRS990 is to ...
+The goal of ParseIRS990 is to enable researchers to study U.S. non-profit organization by parsing IRS 990 filings.
 
 ## Installation
 
