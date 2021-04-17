@@ -24,3 +24,6 @@ library(ParseIRS990)
 ## basic example code
 ```
 
+<a href="https://geoservices.tamu.edu">
+    Geo-stuff provided by Texas A&M University GeoServices
+</a>
