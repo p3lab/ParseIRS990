@@ -258,7 +258,7 @@ clean_program_desc <- function(program_desc, text_length_threshold) {
 #' @export
 
 ifnotNA <- function(var) {
-  ifelse(length(var) != 0, var, NA)
+  if (length(var) != 0) { return(var) } else { return(NA) }
 }
 
 #' Get 990 filing type 
