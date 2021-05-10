@@ -66,6 +66,8 @@ get_aws_url <- function(ein, year = 2019, form = NULL, move_global = TRUE) {
       } 
     
   }
+  
+  # Some organizations have two object IDs
 
   idx <- get(glue("idx_{year}"))
              
