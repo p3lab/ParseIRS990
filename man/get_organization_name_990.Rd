@@ -8,6 +8,7 @@ get_organization_name_990(idx_year, ein)
 }
 \arguments{
 \item{idx_year}{A XML file it contains the 990 forms filed in a particular year. An outcome of import_idx() function.}
+
 \item{ein}{An Employment Identification Numbers}
 }
 \value{

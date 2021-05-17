@@ -76,7 +76,7 @@ get_aws_url <- function(ein, year = 2019, form = NULL, move_global = TRUE) {
     
     if (move_global == TRUE) {
       
-      assign(glue("idx_{year}"), import_idx(year), envir = .GlobalEnv) # The global environment 
+      assign(glue("idx_{year}"), import_idx(year), envir = globalenv()) # The global environment 
       
     } else { 
       
@@ -408,7 +408,7 @@ get_single_value_990 <- function(xml_root, irs_variable) {
     pluck(2) # pick the second element on the list
   filing_type <- get_filing_type_990(xml_root) # need form type to know where to look or text
   
-  xml_field <- irs_fields %>% filter(package_variable==irs_variable) %>% select(glue("XML_{filing_type}"))
+  xml_field <- irs_fields %>% filter(package_variable == irs_variable) %>% select(glue("XML_{filing_type}"))
 
   if (is.na(xml_field)) {
     return(NA)
@@ -417,7 +417,7 @@ get_single_value_990 <- function(xml_root, irs_variable) {
   if (str_detect(xml_field,"<br>")) {
     subfields <- tibble(xml_field = str_split(xml_field,"<br>")[[1]]) %>% rowwise() %>% 
       mutate(value = ifnotNA(xml_plucked %>% getNodeSet(xml_field) %>% map_chr(xmlValue)))
-    form_value <- sum(as.numeric(subfields$value),na.rm=T)
+    form_value <- sum(as.numeric(subfields$value),na.rm = T)
   } else {
     form_value <- xml_plucked %>% getNodeSet(xml_field) %>% map_chr(xmlValue)
   }   
@@ -437,7 +437,7 @@ get_single_value_990 <- function(xml_root, irs_variable) {
 #' @export
 
 get_all_financial_data <- function(xml_root) {
-  financial_data <- irs_fields %>% filter(category=="financial") %>% 
+  financial_data <- irs_fields %>% filter(category == "financial") %>% 
     select(package_variable) %>% 
     rowwise() %>% mutate(val = get_single_value_990(xml_root,package_variable)) %>%
     spread(package_variable, val)
