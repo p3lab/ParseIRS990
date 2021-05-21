@@ -328,7 +328,7 @@ get_filing_type_990 <- function(xml_root) {
   xml_plucked <- xml_root %>%
     pluck(1) # pick the second element on the list
 
-  filing_type <- xml_plucked %>% getNodeSet("//ReturnTypeCd") %>% map_chr(xmlValue)
+  filing_type <- xml_plucked %>% getNodeSet("//ReturnType | //ReturnTypeCd") %>% map_chr(xmlValue)
   if (filing_type != "990EZ" & filing_type != "990PF") { 
     filing_type <- "990" #standardize other names to 990
   }
