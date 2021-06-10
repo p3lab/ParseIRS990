@@ -58,8 +58,12 @@ import_idx <- function(year){
 #' @param move_global Whether moving the XML file, which contains the 990 forms filed in a particular year, to the user's global environment. The default value is TRUE.
 #' 
 #' @return If successful, the function returns the Amazon Web Server URL associated with a particular Employment Identification Numbers.
-#' @importFrom dplyr filter
+#' @import dplyr
+#' @importFrom dplyr filter 
 #' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom dplyr arrange
+#' @importFrom dplyr desc
 #' @importFrom glue glue
 #' @export
 
@@ -93,32 +97,25 @@ get_aws_url <- function(ein, year = 2019, form = NULL, move_global = TRUE) {
   if (is.null(form)) {
     
     obj_id <- idx %>%
-      filter(EIN == ein) %>%
-      select(ObjectId)
+      filter(EIN == ein)
     
   } else {
     
     obj_id <- idx %>%
       filter(FormType == form) %>%
-      filter(EIN == ein) %>%
-      select(ObjectId)
+      filter(EIN == ein) 
     
   }
+  
+  out <- obj_id %>% 
+    select(ObjectId, SubmittedOn) %>%
+    mutate(tax_year = gsub("-.*", "", SubmittedOn)) %>%
+    arrange(desc(tax_year, SubmittedOn)) %>%
+    filter(tax_year == year) %>%
+    select(ObjectId)
 
   # Glue search parameter and the rest of the URL together
-
-  # This tax report was amended
-  if (nrow(obj_id == 2)) {
-
-    # glue("http://s3.amazonaws.com/irs-form-990/{obj_id[1,]}_public.xml") # Pre-amended report
-
-    glue("http://s3.amazonaws.com/irs-form-990/{obj_id[2,]}_public.xml") # Post-amended IRS report
-  }
-
-  # This tax report was not amended
-  if (nrow(obj_id == 1)) {
-    glue("http://s3.amazonaws.com/irs-form-990/{obj_id[1,]}_public.xml")
-  }
+  return(glue("http://s3.amazonaws.com/irs-form-990/{out[1,]}_public.xml"))
 
 }
 
