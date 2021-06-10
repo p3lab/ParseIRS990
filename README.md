@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of ParseIRS990 is to enable researchers to study U.S. non-profit organization by parsing IRS 990 filings.
+ParseIRS990 assists research on U.S. non-profit organizations by making parsing IRS 990 filings easy and fast.
 
 ## Installation
 
@@ -12,7 +12,6 @@ The goal of ParseIRS990 is to enable researchers to study U.S. non-profit organi
 ## Install the current development version from GitHub
 
 devtools::install_github("p3lab/ParseIRS990", dependencies = TRUE)
-
 ```
 
 ## Example
