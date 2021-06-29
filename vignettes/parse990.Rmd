@@ -1,0 +1,77 @@
+---
+title: "parse990"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{parse990}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ParseIRS990)
+```
+
+This vignette gives an overview of the R package `ParseIRS990`
+
+### Load index
+
+To begin, load the IRS index for a given year.
+```{r, eval=FALSE}
+## load 2018 index file from AWS
+idx_2018 <- import_idx(2018)
+```
+
+### Get the AWS url for the filing of interest
+
+Digitized 990 data are available as XML files in an AWS repository. These files are organized by yearly index file. The year, in this case, refers to the year that the IRS processed the file. All of the files in the 2018 index were processed in 2018. The tax filing itself can be from any previous date, given by the TaxPeriod field in the index. (Which has the format YYYMM.)
+
+To extract data of interest for a given organization, first find the XML files for that organization in the index. There may be more than one file if the organization submitted tax forms for multiple tax periods in the same year. 
+
+```{r, eval=FALSE}
+## this organization has a single filing that was processed in 2018
+aws_url <- get_aws_url("221405099",year=2018,multiple_tax_period=TRUE)
+
+## this organization has filings for multiple tax periods that were processed in 2018
+aws_urls <- get_aws_url("611085915",year=2018,multiple_tax_period=TRUE)
+
+## omitting multiple_tax_period=TRUE will return only the latest of these filings
+aws_url <- get_aws_url("611085915",year=2018,multiple_tax_period=FALSE)
+```
+
+### Get the XML file for a given AWS url
+
+To parse fields from filings, first load an XML file of interest
+
+```{r, eval=FALSE}
+## WHOOPS. NOTE TO SELF - THIS WON'T WORK WITH multiple_tax_period=TRUE!
+xml_root <- get_990("221405099", year=2018)
+
+## see name of this organization
+organization_name <- get_organization_name_990(idx_2018, "221405099")
+```
+
+### Get a specific field from a filing
+Non-profit organizations can file different versions of the 990 Form, depending on their specific status. Knowledge of the specific form type is not required to extract values with this package but you can see the form type of a given form with:
+
+```{r, eval=FALSE}
+## see form type of a filing
+filing_type <- get_filing_type_990(xml_root)
+```
+
+Available parsed fields can be seen in the suppled `irs_fields` table. The `package_variable` column gives the name of the variable to be used in functions. Other columns show both the XML path and the physical form location for that variable. Available variables are grouped by category and subcategory.
+
+```{r, eval=FALSE}
+## see available variables
+irs_fields
+
+## get total revenue for this org
+revenue_total <- get_single_value_990(xml_root, "revenue_total")
+```
+

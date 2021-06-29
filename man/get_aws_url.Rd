@@ -4,16 +4,12 @@
 \alias{get_aws_url}
 \title{Get the Amazon Web Server URL associated with a particular Employment Identification Numbers}
 \usage{
-get_aws_url(ein, year = 2019, form = NULL, move_global = TRUE)
+get_aws_url(ein, year = 2019)
 }
 \arguments{
 \item{ein}{An Employment Identification Numbers}
 
 \item{year}{A year in which a form was filed. The default IRS year is 2019.}
-
-\item{form}{An IRS document form. The default is NULL. There are three other options: "990", "990PF", "990EZ"}
-
-\item{move_global}{Whether moving the XML file, which contains the 990 forms filed in a particular year, to the user's global environment. The default value is TRUE.}
 }
 \value{
 If successful, the function returns the Amazon Web Server URL associated with a particular Employment Identification Numbers.

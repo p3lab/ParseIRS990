@@ -6,14 +6,14 @@ context("Check whether parsing ScheduleO works. The default year is 2019.")
 test_that("Check whether the exact document source is provided when inspecting Schedule O", {
     
     expect_equal(
-      unique(grepl("From FORM", get_scheduleO("061553389"))), 
+      unique(grepl("The form 990 was", get_scheduleO("061553389")[1])), 
       TRUE)
 
     })
 
 test_that("Check whether get_scheduleO returns all entries", {
   
-  expect_equal(length(grepl("From FORM", (get_scheduleO("061553389")), TRUE)) >= 2, TRUE)
+  expect_equal(length(grepl("From Form", (get_scheduleO("061553389")), TRUE)) >= 2, TRUE)
   
   })
 
