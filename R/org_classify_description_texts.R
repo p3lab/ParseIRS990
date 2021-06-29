@@ -107,7 +107,7 @@ get_aws_url <- function(ein, year = 2019) {
   # This organization filed an extra return that year
   if (nrow(obj_id) == 2) {
     message(glue("This organization filed two returns in {year}. This is rare and usually means they filed an extra, final return before terminating the organization."))
-    message(glue("Try irs_index %>% filter(EIN == {ein}, Tax_Year == {year} for more information."))
+    message(glue("Try irs_index %>% filter(EIN == '{ein}', Tax_Year == {year}) for more information."))
   }
   
   if (nrow(obj_id) == 0) {
