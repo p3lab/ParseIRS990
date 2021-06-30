@@ -30,31 +30,27 @@ idx_2018 <- import_idx(2018)
 
 ### Get the AWS url for the filing of interest
 
-Digitized 990 data are available as XML files in an AWS repository. These files are organized by yearly index file. The year, in this case, refers to the year that the IRS processed the file. All of the files in the 2018 index were processed in 2018. The tax filing itself can be from any previous date, given by the TaxPeriod field in the index. (Which has the format YYYMM.)
+Digitized 990 data are available as XML files in an AWS repository. These files are organized by yearly index file. The year, in this case, refers to the year that the IRS processed the file. All of the files in the 2018 index were processed in 2018. The tax filing itself can be from any previous date. This makes it difficult to locate a specific filing for a given organization and given year. 
 
-To extract data of interest for a given organization, first find the XML files for that organization in the index. There may be more than one file if the organization submitted tax forms for multiple tax periods in the same year. 
+To remedy this, we have rebuilt a consolidated index file for this package. This index, included in the package, contains the additional fields `TaxPeriodBeginDt`, `TaxPeriodEndDt`, and (importantly) `Tax_Year`. `Tax_Year` refers to the tax year of the 990 form the organization submitted. (Whereas `IRS_Year` refers to the year the IRS processed the submission into digitized form.) Note that organizations can chose to adhere either to a calendar year or to a fiscal year of their selection. `TaxPeriodBeginDt` and `TaxPeriodEndDt` refer to the beginning and end dates of that filing's year.
+
+The location of a given digitized filing can be found with the `get_aws_url` function. This returns the location of the XML file in the AWS repository.
 
 ```{r, eval=FALSE}
-## this organization has a single filing that was processed in 2018
-aws_url <- get_aws_url("221405099",year=2018,multiple_tax_period=TRUE)
-
-## this organization has filings for multiple tax periods that were processed in 2018
-aws_urls <- get_aws_url("611085915",year=2018,multiple_tax_period=TRUE)
-
-## omitting multiple_tax_period=TRUE will return only the latest of these filings
-aws_url <- get_aws_url("611085915",year=2018,multiple_tax_period=FALSE)
+## this organization's 2018 990 filing can be found here
+aws_url <- get_aws_url("061553389",2018)
 ```
 
 ### Get the XML file for a given AWS url
 
-To parse fields from filings, first load an XML file of interest
+To parse fields from filings, first load an XML file of interest. Note that this function calls `get_aws_url` so there is no need to find the URL location yourself. `get_990` will be the first step for most uses of this package.
 
 ```{r, eval=FALSE}
-## WHOOPS. NOTE TO SELF - THIS WON'T WORK WITH multiple_tax_period=TRUE!
+## load an XML for this organization's 2018 filing.
 xml_root <- get_990("221405099", year=2018)
 
 ## see name of this organization
-organization_name <- get_organization_name_990(idx_2018, "221405099")
+organization_name <- get_organization_name_990("221405099")
 ```
 
 ### Get a specific field from a filing
@@ -75,3 +71,23 @@ irs_fields
 revenue_total <- get_single_value_990(xml_root, "revenue_total")
 ```
 
+### See related entities
+Organizations report related entities on Form 990 Schedule R. The EINs of related organizations can be found with `get_scheduleR`. 
+
+```{r, eval=FALSE}
+## see related EINs for a given EIN and given tax year filing. 
+related_eins <- get_scheduleR("061553389",2018)
+```
+
+This function returns multiple values if multiple related organizations are reported and will indicate if no related organizations were reported. 
+
+### Extract Mission and Description Text
+Organizations report descriptive information about their primary mission and main activities in 990 filings. The concatenated responses to these fields can be extracted.
+
+```{r, eval=FALSE}
+# mission statement
+mission_desc <- get_value_990(xml_root, "mission_desc")
+
+# program description
+program_desc <- get_value_990(xml_root, "program_desc")
+```

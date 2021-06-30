@@ -215,19 +215,20 @@ get_990 <- function(ein, year = 2019) {
 
 #' Get the name of the organization associated with a particular Employment Identification Numbers 
 #'
-#' @param idx_year A XML file it contains the 990 forms filed in a particular year. An outcome of import_idx() function. 
 #' @param ein An Employment Identification Numbers  
 #' 
 #' @return If successful, the function returns the name of the organization associated with a particular Employment Identification Numbers
 #' @importFrom dplyr filter
 #' @importFrom dplyr select
+#' @importFrom dplyr slice
 #' @export
 
-get_organization_name_990 <- function(idx_year, ein) {
+get_organization_name_990 <- function(ein) {
   
-  organization_name <- idx_year %>%
+  organization_name <- irs_index %>%
     filter(EIN == ein) %>%
-    select(OrganizationName)
+    select(OrganizationName) %>%
+    slice(1)
 
   return(organization_name)
 }
@@ -235,16 +236,15 @@ get_organization_name_990 <- function(idx_year, ein) {
 
 #' Get Employer Identification Numbers (EINs) associated with foundations 
 #'
-#' @param idx_year A XML file it contains the 990 forms filed in a particular year. An outcome of import_idx() function.  
 #' 
 #' @return If successful, the function returns the EINs associated with foundations. 
 #' @importFrom dplyr filter
 #' @importFrom dplyr pull
 #' @export
 
-get_foundation_ein <- function(idx_year){
+get_foundation_ein <- function(){
   
-  foundation_ein <- idx_year %>%
+  foundation_ein <- irs_index %>%
     filter(FormType == "990PF") %>%
     pull(EIN)
   
