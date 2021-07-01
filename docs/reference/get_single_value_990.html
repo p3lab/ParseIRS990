@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get various information about an organization — example_function_for_single_org • ParseIRS990</title>
+<title>Get concrete information from 990 forms — get_single_value_990 • ParseIRS990</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Get various information about an organization — example_function_for_single_org" />
-<meta property="og:description" content="Get various information about an organization" />
+<meta property="og:title" content="Get concrete information from 990 forms — get_single_value_990" />
+<meta property="og:description" content="Get concrete information from 990 forms" />
 
 
 
@@ -111,41 +111,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get various information about an organization</h1>
+    <h1>Get concrete information from 990 forms</h1>
     <small class="dont-index">Source: <a href='https://github.com/p3lab/ParseIRS990/blob/master/R/org_classify_description_texts.R'><code>R/org_classify_description_texts.R</code></a></small>
-    <div class="hidden name"><code>example_function_for_single_org.Rd</code></div>
+    <div class="hidden name"><code>get_single_value_990.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get various information about an organization</p>
+    <p>Get concrete information from 990 forms</p>
     </div>
 
-    <pre class="usage"><span class='fu'>example_function_for_single_org</span><span class='op'>(</span>
-  <span class='va'>ein</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"base"</span>, <span class='st'>"extended"</span>, <span class='st'>"unnested"</span>, <span class='st'>"combined"</span><span class='op'>)</span>,
-  year <span class='op'>=</span> <span class='fl'>2019</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_single_value_990</span><span class='op'>(</span><span class='va'>xml_root</span>, <span class='va'>irs_variable</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ein</th>
-      <td><p>An Employment Identification Numbers (EIN)</p></td>
+      <th>xml_root</th>
+      <td><p>An XML root element associated with a particular organization</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>Different types of information users can get about an organization: "base," "extended," "unnested," and "combined". A base type output includes an organization's EIN, standardized website URL, its mission statement and program descriptions. An extended version includes information on an organization's schedule R and O documents (list columns). An unnested version transforms the information on schedule R and O documents as character vectors, not as list columns. A combined version joins the base and extended outputs together.</p></td>
-    </tr>
-    <tr>
-      <th>year</th>
-      <td><p>A year in which a form was filed. The default value is 2019.</p></td>
+      <th>irs_variable</th>
+      <td><p>A type of concrete information. It should correspond to a package_variable in the package's irs_fields table</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns either concrete information from Schedule O (likely character) or states that such information is not present.</p>
+    <p>Depending on the type parameter, the function returns the value of the 990 form for the given variable or else NA.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

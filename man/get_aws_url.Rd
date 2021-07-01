@@ -7,12 +7,12 @@
 get_aws_url(ein, year = 2019)
 }
 \arguments{
-\item{ein}{An Employment Identification Numbers}
+\item{ein}{An Employment Identification Numbers (EIN)}
 
 \item{year}{A year in which a form was filed. The default IRS year is 2019.}
 }
 \value{
-If successful, the function returns the Amazon Web Server URL associated with a particular Employment Identification Numbers.
+If a single tax period was identified, the function returns the Amazon Web Server URL associated with a particular Employment Identification Numbers. If multiple tax periods were identified, the function returns either a vector that only includes the URL (multiple_tax_period= FALSE) or a dataframe that includes the URL as well as related tax periods (multiple_tax_period = TRUE).
 }
 \description{
 Get the Amazon Web Server URL associated with a particular Employment Identification Numbers
