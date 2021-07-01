@@ -1,6 +1,6 @@
 Package: ParseIRS990
 Title: Parsing IRS Form 990 and other related tax reports  
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     c(person(given = "Milan",
            family = "de Vries",
@@ -19,21 +19,21 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: TRUE
 Imports: 
-    readr, 
-    XML, 
-    rvest, 
-    jsonlite,  
-    stringr, 
-    tibble, 
-    tidyr, 
-    dplyr, 
-    purrr, 
+    readr,
+    XML,
+    rvest,
+    jsonlite,
+    stringr,
+    tibble,
+    tidyr,
+    dplyr (>= 1.0.6),
+    purrr,
     furrr,
-    here,  
-    glue,  
-    rex, 
-    urltools, 
-    magrittr 
+    here,
+    glue,
+    rex,
+    urltools,
+    magrittr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
