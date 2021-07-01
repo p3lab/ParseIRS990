@@ -31,6 +31,32 @@ import_idx <- function(year){
   }
 }
 
+#' Index table of all available IRS filings
+#'
+#' A dataset containing the AWS server information for available IRS filings. This index
+#' is refactored from the AWS index files. The AWS files are arranged by year the IRS 
+#' processed the file. These are arranged by tax year.
+#'
+#' @format A data frame with 3235913 rows and 14 variables:
+#' \describe{
+#'   \item{EIN}{IRS Employer Identification Number}
+#'   \item{TaxPeriod}{Corresponds to YYYMM of the tax period end date}
+#'   \item{DLN}{Download Number}
+#'   \item{FormType}{Version of the 990 Form filed}
+#'   \item{URL}{location on the AWS server of the XML parsed filing}
+#'   \item{SubmittedOn}{Submission date}
+#'   \item{ObjectId}{id of the filing on the server}
+#'   \item{OrganizationName}{name of organization}
+#'   \item{LastUpdated}{date last updated}
+#'   \item{IRS_year}{Calendar year the IRS processed the filing. Corresponds to AWS index year.}
+#'   \item{TaxPeriodBeginDt}{Start of the filings tax period}
+#'   \item{TaxPeriodEndDt}{End of the filings tax period}
+#'   \item{Tax_Year}{Year of the tax filing}
+#'   \item{ReturnTs}{timestamp of the tax return}
+#' }
+"irs_index"
+
+
 #' Data fields available from IRS 990 forms
 #'
 #' A dataset containing the variable names, associated Form 990 XML locations, Form 990 actual locations, and info
@@ -49,6 +75,49 @@ import_idx <- function(year){
 #'   \item{Form_990PF}{the Part and Line number of the form location for this XML} 
 #' }
 "irs_fields"
+
+
+#' Get the Amazon Web Server URL associated with a particular Employment Identification Numbers 
+#'
+#' @param ein An Employment Identification Numbers 
+#' @param year A year in which a form was filed. The default IRS year is 2019.
+#' 
+#' @return If successful, the function returns the Amazon Web Server URL associated with a particular Employment Identification Numbers.
+#' @importFrom dplyr filter
+#' @importFrom dplyr select
+#' @importFrom dplyr arrange
+#' @importFrom glue glue
+#' @export
+
+get_aws_url <- function(ein, year = 2019) {
+  
+  # Turn search parameter into character vector
+  ein <- ifelse(!is.character(ein), as.character(ein), ein)
+  
+  # Some organizations have two object IDs
+  
+   obj_id <- irs_index %>%
+    filter(EIN == ein, Tax_Year == year) %>%
+    arrange(TaxPeriodEndDt) %>%
+    select(ObjectId)
+
+  
+  # Glue search parameter and the rest of the URL together
+  
+  # This organization filed an extra return that year
+  if (nrow(obj_id) == 2) {
+    message(glue("This organization filed two returns in {year}. This is rare and usually means they filed an extra, final return before terminating the organization."))
+    message(glue("Try irs_index %>% filter(EIN == '{ein}', Tax_Year == {year}) for more information."))
+  }
+  
+  if (nrow(obj_id) == 0) {
+    message(glue("Could not locate a filing for EIN = {ein} in {year}"))
+  } else {
+    glue("http://s3.amazonaws.com/irs-form-990/{obj_id[1,]}_public.xml")
+  }
+  
+}
+
 
 #' Get the Amazon Web Server URL associated with a particular Employment Identification Numbers 
 #'
@@ -69,7 +138,7 @@ import_idx <- function(year){
 #' @importFrom glue glue
 #' @export
 
-get_aws_url <- function(ein, year = 2019, tax_period = 2019, form = NULL, move_global = TRUE, multiple_tax_period = FALSE) {
+get_aws_url_from_server <- function(ein, year = 2019, form = NULL, move_global = TRUE) {
 
   message(glue("The IRS filing year is {year}."))
   
@@ -196,19 +265,20 @@ get_990 <- function(ein, year = 2019) {
 
 #' Get the name of the organization associated with a particular Employment Identification Numbers 
 #'
-#' @param idx_year A XML file it contains the 990 forms filed in a particular year. An outcome of import_idx() function. 
 #' @param ein An Employment Identification Numbers  
 #' 
 #' @return If successful, the function returns the name of the organization associated with a particular Employment Identification Numbers
 #' @importFrom dplyr filter
 #' @importFrom dplyr select
+#' @importFrom dplyr slice
 #' @export
 
-get_organization_name_990 <- function(idx_year, ein) {
+get_organization_name_990 <- function(ein) {
   
-  organization_name <- idx_year %>%
+  organization_name <- irs_index %>%
     filter(EIN == ein) %>%
-    select(OrganizationName)
+    select(OrganizationName) %>%
+    slice(1)
 
   return(organization_name)
 }
@@ -216,16 +286,15 @@ get_organization_name_990 <- function(idx_year, ein) {
 
 #' Get Employer Identification Numbers (EINs) associated with foundations 
 #'
-#' @param idx_year A XML file it contains the 990 forms filed in a particular year. An outcome of import_idx() function.  
 #' 
 #' @return If successful, the function returns the EINs associated with foundations. 
 #' @importFrom dplyr filter
 #' @importFrom dplyr pull
 #' @export
 
-get_foundation_ein <- function(idx_year){
+get_foundation_ein <- function(){
   
-  foundation_ein <- idx_year %>%
+  foundation_ein <- irs_index %>%
     filter(FormType == "990PF") %>%
     pull(EIN)
   
