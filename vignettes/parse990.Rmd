@@ -20,13 +20,11 @@ library(ParseIRS990)
 
 This vignette gives an overview of the R package `ParseIRS990`
 
-### Load index
+### Introduction
 
-To begin, load the IRS index for a given year.
-```{r, eval=FALSE}
-## load 2018 index file from AWS
-idx_2018 <- import_idx(2018)
-```
+Registered U.S. non-profit organizations are required to report yearly to the Internal Revenue Service to demonstrate continued compliance and maintain their tax-free status. Depending on the particular category of non-profit and organization is in and depending on their total revenue they may be required to file a 990 form. This filing details various aspects of the organization's finances as well as their activities. 
+
+These 990 filings are a valuable source of information for researchers interested in civic life in America. Since 2012 990 filings have been digitized and made available to the public. However, accessing information from these filings can be cumbersome and require a great deal of domain expertise. The aim of this package is to simplify the work of accessing 990 data for researchers. 
 
 ### Get the AWS url for the filing of interest
 
@@ -81,7 +79,7 @@ related_eins <- get_scheduleR("061553389",2018)
 
 This function returns multiple values if multiple related organizations are reported and will indicate if no related organizations were reported. 
 
-### Extract Mission and Description Text
+### Extract mission and description text
 Organizations report descriptive information about their primary mission and main activities in 990 filings. The concatenated responses to these fields can be extracted.
 
 ```{r, eval=FALSE}
